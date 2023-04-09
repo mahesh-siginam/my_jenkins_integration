@@ -17,6 +17,12 @@ stages {
         echo "deploy stage"
       }
   }
+   stage("Email Notification") {
+      steps {
+        mail body:'''HI this is a test mail from my multi branch pipeline''',
+          to: 'siginammahesh5@gmail.com', subject: '''Jenkins Test Email Notification'''
+      }
+  }
 }
 
 }
