@@ -2,17 +2,21 @@ pipeline {
 
 agent any
   
-parameters([string(name: 'sub_job', defaultValue: 'True')])
-def job1 = Jenkins.instance.getJob('multibranch_two')
+  parameters{
+    string(name: 'sub_job', defaultValue: 'True')
+  }
 
 stages {
   stage("build") {
-      steps {
-        if (${sub_job} == 'True') {
-          build(job1)
-        }
-        echo "build stage"
+    when {
+      expression {params.sub_job == 'True'}
+    }
+    steps {
+      script {
+        def result = build job: 'multibranch_two', propagate: false, wait: false
       }
+        echo "build stage"
+     }
   }
   stage("test") {
       steps {
